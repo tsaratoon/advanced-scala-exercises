@@ -13,6 +13,7 @@ object MapReduceExample {
 	
   //  - Implement `parallelFoldMap`
 	def parallelFoldMap[A,B](list: List[A])(f: A => B)(implicit monoid: Monoid[B]): Future[B] = {
+	  val groups = list.grouped(Common.groupSize(list))
 	  ???
 	}
 	

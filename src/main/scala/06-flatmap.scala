@@ -11,8 +11,11 @@ object FlatMapExample {
     def flatMap[A, B](input: F[A])(func: A => F[B]): F[B]
 
     // Concrete methods defined in terms of the above"
-    def map[A, B](input: F[A])(func: A => B): F[B] = ???
-    def join[A](input: F[F[A]]): F[A] = ???
+    def map[A, B](input: F[A])(func: A => B): F[B] = 
+      flatMap(input)(x => point(func(x)))
+    
+    
+//    def join[A](input: F[F[A]]): F[A] = ???
   }
 
   def main(args: Array[String]): Unit = ()

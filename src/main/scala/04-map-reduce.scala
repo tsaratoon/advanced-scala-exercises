@@ -2,7 +2,9 @@ import scalaz.Monoid
 import scalaz.std.anyVal._
 import scalaz.syntax.monoid._
 import scala.concurrent.Future
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 object MapReduceExample {
   // TODO:
@@ -45,11 +47,13 @@ object MapReduceExample {
 
   def main(args: Array[String]) = {
 
-    val list = List("Hello","world")
-    println(foldMap(list)(s => s.length))
+    val lotsOfStrings = (1 to 1000000).map(_.toString).toList
+    println(foldMap(lotsOfStrings)(s => s.length))
     
     println(Common.time(foldMap(Common.wordList)(_.length)))
+    println(Common.time(Await.result(parallelFoldMap(Common.wordList)(_.length), 3.seconds)))
     
-//    println(Await.result(parallelFoldMap(Common.wordList)(_.length), 3.seconds))
+    println(Common.time(foldMap(lotsOfStrings)(_.length)))
+    println(Common.time(Await.result(parallelFoldMap(lotsOfStrings)(_.length), 3.seconds)))
   }
 }
